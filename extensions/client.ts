@@ -31,7 +31,7 @@ export const bootstrap = async (
   cwd: string,
 ): Promise<HonchoHandles> => {
   const honcho = new Honcho({
-    apiKey: config.apiKey,
+    apiKey: config.apiKey || "none",
     baseURL: config.baseURL,
     workspaceId: config.workspaceId,
   });

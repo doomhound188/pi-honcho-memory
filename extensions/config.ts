@@ -99,12 +99,12 @@ export const resolveConfig = async (): Promise<HonchoExtensionConfig> => {
   const file = await readConfigFile();
   const piHost = file?.hosts?.pi;
 
-  // Enabled gate: explicit env var, otherwise true if API key is available
+  const baseURL = process.env.HONCHO_URL || piHost?.endpoint || undefined;
+
+  // Enabled gate: explicit env var, otherwise true if API key or custom baseURL is available
   const enabledEnv = process.env.HONCHO_ENABLED;
   const apiKey = process.env.HONCHO_API_KEY || file?.apiKey || undefined;
-  const enabled = enabledEnv !== undefined ? enabledEnv === "true" : Boolean(apiKey);
-
-  const baseURL = process.env.HONCHO_URL || piHost?.endpoint || undefined;
+  const enabled = enabledEnv !== undefined ? enabledEnv === "true" : Boolean(apiKey || baseURL);
   const workspaceId = process.env.HONCHO_WORKSPACE_ID || piHost?.workspace || "pi";
   const userPeerId =
     process.env.HONCHO_PEER_NAME || file?.peerName || userInfo().username || "user";
